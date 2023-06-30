@@ -1,4 +1,6 @@
-from django.urls import path
+from django.urls import include, path
+from django.conf import settings
+
 
 from . import views
 
@@ -10,4 +12,6 @@ urlpatterns = [
     path('<int:pk>/', views.BirthdayDetailView.as_view(), name='detail'),
     path('<int:pk>/edit/',views.BirthdayUpdateView.as_view(), name='edit'),
     path('<int:pk>/delete/', views.BirthdayDeleteView.as_view(), name='delete'),
+    path('login_only/', views.simple_view),
+    path('<int:pk>/comment/', views.add_comment, name='add_comment'),
 ]

@@ -4,7 +4,7 @@ from django.core.mail import send_mail
 
 from django.core.exceptions import ValidationError
 
-from .models import Birthday
+from .models import Birthday, Congratulation
 
 PLAYERS = {'Дэвид Бэкхем', 'Зинедин Зидан', 'Карлес Пуйоль', 'Ривалдо Дж.'}
 
@@ -14,7 +14,7 @@ class BirthdayForm(forms.ModelForm):
 
     class Meta:
         model = Birthday
-        fields = '__all__'
+        exclude = ('author',)
         widgets = {
             'birthday': forms.DateInput(attrs={'type': 'date'})
         }
@@ -31,7 +31,7 @@ class BirthdayForm(forms.ModelForm):
         last_name = self.cleaned_data['last_name']
         if f'{first_name} {last_name}' in PLAYERS:
             send_mail(
-                subject='Another Beatles member',
+                subject='Another football player',
                 message=f'{first_name} {last_name} пытался опубликовать запись!',
                 from_email='birthday_form@acme.not',
                 recipient_list=['admin@acme.not'],
@@ -40,3 +40,10 @@ class BirthdayForm(forms.ModelForm):
             raise ValidationError(
                 'Мы тоже любим футболистов, но введите, пожалуйста, настоящее имя!'
             )
+
+
+class CongratulationForm(forms.ModelForm):
+    
+    class Meta:
+        model = Congratulation
+        fields = ('text',)
